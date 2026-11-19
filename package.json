@@ -1,0 +1,9 @@
+{
+  "name": "phishing-url-analyzer",
+  "private": true,
+  "type": "module",
+  "description": "Explainable phishing URL risk scoring in the browser",
+  "scripts": {
+    "test": "node tests/run.mjs"
+  }
+}

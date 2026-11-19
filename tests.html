@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phishing URL Analyzer Tests</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>Tests</h1>
+    <p id="summary"><strong>Running…</strong></p>
+    <div class="card"><ul id="list" class="findings"></ul></div>
+    <p><a href="./">← Back to the analyzer</a></p>
+  </main>
+  <script type="module">
+    import { cases } from "./tests/cases.js";
+    const list = document.getElementById("list");
+    let failed = 0;
+    for (const [name, fn] of cases) {
+      const li = document.createElement("li");
+      try { fn(); li.textContent = "PASS  " + name; li.className = "low"; }
+      catch (e) { failed++; li.textContent = "FAIL  " + name + " -> " + e.message; li.className = "high"; }
+      list.appendChild(li);
+    }
+    document.getElementById("summary").textContent = `${cases.length - failed} passed, ${failed} failed`;
+  </script>
+</body>
+</html>

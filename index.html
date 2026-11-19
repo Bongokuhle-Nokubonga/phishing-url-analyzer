@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phishing URL Analyzer</title>
+  <meta name="description" content="Check a link for phishing warning signs: look-alike domains, brand impersonation, raw IPs, shorteners and more. Runs entirely in your browser.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <p class="kicker">Security awareness tool</p>
+      <h1>Phishing URL Analyzer</h1>
+      <p class="muted">Paste a link from an email or SMS. It's checked for common phishing tricks and every warning is explained.
+        <strong>Nothing is sent anywhere</strong>: the link is analysed in your browser and never opened.</p>
+    </header>
+
+    <form id="form" class="card" autocomplete="off">
+      <label for="url">Link to check</label>
+      <div class="row">
+        <input id="url" spellcheck="false" placeholder="https://example.com/login" aria-describedby="error">
+        <button type="submit" class="primary">Analyse</button>
+      </div>
+      <div class="examples">
+        <span>Try:</span>
+        <button type="button" data-url="https://www.microsoft.com/en-za">microsoft.com</button>
+        <button type="button" data-url="http://paypal.com.account-verify.xyz/login">paypal.com.account-verify.xyz</button>
+        <button type="button" data-url="https://rnicrosoft-support.com/signin?next=https://evil.example">rnicrosoft-support.com</button>
+        <button type="button" data-url="https://fnb-secure-update.co/verify">fnb-secure-update.co</button>
+        <button type="button" data-url="http://192.168.10.5:8080/secure/update.php">192.168.10.5:8080</button>
+      </div>
+      <p id="error" class="error" role="alert"></p>
+    </form>
+
+    <section id="result" class="card" hidden aria-live="polite">
+      <div class="verdict">
+        <div>
+          <p class="muted small">Risk level</p>
+          <p id="level" class="level"></p>
+        </div>
+        <div class="gauge" aria-hidden="true"><div id="bar"></div></div>
+        <p id="score" class="score"></p>
+      </div>
+      <p class="small muted">Real website behind this link: <code id="domain"></code></p>
+      <h2>What we found</h2>
+      <ul id="findings" class="findings"></ul>
+      <div class="advice">
+        <h3>What to do</h3>
+        <ul>
+          <li>Don't type passwords or banking details on a page you reached from a link. Go to the site yourself.</li>
+          <li>Check the <strong>real domain</strong> above: everything else in the link can be faked.</li>
+          <li>At work, report suspicious emails to your IT or security team.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="muted small">
+      Heuristic checks only: a low score is not a guarantee a link is safe.
+      Built by <a href="https://bongokuhle-nokubonga.github.io/portfolio-website/">Nokubonga Nkuna</a> ·
+      <a href="https://github.com/Bongokuhle-Nokubonga/phishing-url-analyzer">Source</a> ·
+      <a href="tests.html">Tests</a>
+    </footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
