@@ -5,6 +5,13 @@ warning in plain language**. It runs entirely in the browser: the link is never 
 
 **Try it:** https://bongokuhle-nokubonga.github.io/phishing-url-analyzer/
 
+![Tests](https://github.com/Bongokuhle-Nokubonga/phishing-url-analyzer/actions/workflows/test.yml/badge.svg)
+
+![Phishing URL Analyzer flagging paypal.com.account-verify.xyz as high risk](docs/screenshot.png)
+
+The result shows a risk score, **where the link really goes** (the real domain highlighted inside
+the full link), and each warning ranked by severity with a plain-language explanation.
+
 ## What it checks
 
 | Check | Example | Why it matters |

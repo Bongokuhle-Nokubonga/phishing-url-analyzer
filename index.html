@@ -5,25 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Phishing URL Analyzer</title>
   <meta name="description" content="Check a link for phishing warning signs: look-alike domains, brand impersonation, raw IPs, shorteners and more. Runs entirely in your browser.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2314b8a6' d='M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="wrap">
-    <header>
+  <header class="hero">
+    <nav class="wrap nav">
+      <span class="brand">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z"/><path class="tick" d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+        Phishing URL Analyzer
+      </span>
+      <span class="nav-links">
+        <a href="tests.html">Tests</a>
+        <a href="https://github.com/Bongokuhle-Nokubonga/phishing-url-analyzer">GitHub</a>
+      </span>
+    </nav>
+    <div class="wrap hero-text">
       <p class="kicker">Security awareness tool</p>
-      <h1>Phishing URL Analyzer</h1>
-      <p class="muted">Paste a link from an email or SMS. It's checked for common phishing tricks and every warning is explained.
-        <strong>Nothing is sent anywhere</strong>: the link is analysed in your browser and never opened.</p>
-    </header>
+      <h1>Is this link safe to click?</h1>
+      <p class="lede">Paste a link from an email, SMS or WhatsApp. It's checked for 15 common phishing tricks and every warning is explained in plain language.</p>
+      <p class="privacy"><span aria-hidden="true">●</span> Runs in your browser. The link is never opened or sent anywhere.</p>
+    </div>
+  </header>
 
-    <form id="form" class="card" autocomplete="off">
-      <label for="url">Link to check</label>
+  <main class="wrap">
+    <form id="form" class="card search" autocomplete="off">
+      <label for="url" class="sr">Link to check</label>
       <div class="row">
-        <input id="url" spellcheck="false" placeholder="https://example.com/login" aria-describedby="error">
-        <button type="submit" class="primary">Analyse</button>
+        <input id="url" spellcheck="false" placeholder="Paste a link, e.g. https://example.com/login" aria-describedby="error">
+        <button type="submit" class="primary">Analyse link</button>
       </div>
       <div class="examples">
-        <span>Try:</span>
+        <span>Try an example:</span>
         <button type="button" data-url="https://www.microsoft.com/en-za">microsoft.com</button>
         <button type="button" data-url="http://paypal.com.account-verify.xyz/login">paypal.com.account-verify.xyz</button>
         <button type="button" data-url="https://rnicrosoft-support.com/signin?next=https://evil.example">rnicrosoft-support.com</button>
@@ -33,35 +46,57 @@
       <p id="error" class="error" role="alert"></p>
     </form>
 
-    <section id="result" class="card" hidden aria-live="polite">
-      <div class="verdict">
-        <div>
-          <p class="muted small">Risk level</p>
-          <p id="level" class="level"></p>
+    <section id="result" class="result" hidden aria-live="polite">
+      <div class="card verdict">
+        <div class="ring" aria-hidden="true">
+          <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle id="arc" class="arc" cx="60" cy="60" r="52"/></svg>
+          <div class="ring-label"><strong id="score">0</strong><span>/100</span></div>
         </div>
-        <div class="gauge" aria-hidden="true"><div id="bar"></div></div>
-        <p id="score" class="score"></p>
+        <p class="muted small center">Risk level</p>
+        <p id="level" class="level center"></p>
+        <p id="summary" class="center small"></p>
       </div>
-      <p class="small muted">Real website behind this link: <code id="domain"></code></p>
-      <h2>What we found</h2>
-      <ul id="findings" class="findings"></ul>
-      <div class="advice">
-        <h3>What to do</h3>
-        <ul>
-          <li>Don't type passwords or banking details on a page you reached from a link. Go to the site yourself.</li>
-          <li>Check the <strong>real domain</strong> above: everything else in the link can be faked.</li>
-          <li>At work, report suspicious emails to your IT or security team.</li>
-        </ul>
+
+      <div class="details">
+        <div class="card">
+          <h2>Where this link really goes</h2>
+          <p class="anatomy mono" id="anatomy"></p>
+          <p class="small muted">The <mark class="key">highlighted</mark> part is the real website. Everything else in a link can be made to look official.</p>
+        </div>
+        <div class="card">
+          <h2>What we found <span id="count" class="count"></span></h2>
+          <ul id="findings" class="findings"></ul>
+        </div>
       </div>
     </section>
 
-    <footer class="muted small">
-      Heuristic checks only: a low score is not a guarantee a link is safe.
-      Built by <a href="https://bongokuhle-nokubonga.github.io/portfolio-website/">Nokubonga Nkuna</a> ·
-      <a href="https://github.com/Bongokuhle-Nokubonga/phishing-url-analyzer">Source</a> ·
-      <a href="tests.html">Tests</a>
-    </footer>
+    <section class="info">
+      <h2>What it checks</h2>
+      <div class="checks">
+        <div><b>Brand impersonation</b><span>"paypal.com" placed in front of someone else's domain</span></div>
+        <div><b>Look-alike spelling</b><span>rn for m, 1 for l, doubled letters</span></div>
+        <div><b>Hidden characters</b><span>International letters that look Latin (punycode)</span></div>
+        <div><b>The @ trick</b><span>Browsers ignore everything before the @</span></div>
+        <div><b>Raw IP addresses</b><span>Real companies use domain names, not numbers</span></div>
+        <div><b>Shorteners and redirects</b><span>The real destination is hidden</span></div>
+        <div><b>Risky endings</b><span>Cheap domains like .xyz, .top and .zip</span></div>
+        <div><b>Pressure words</b><span>verify, suspended, urgent, reset</span></div>
+      </div>
+      <div class="card tips">
+        <h2>Got a suspicious link?</h2>
+        <ol>
+          <li>Don't type passwords or banking details on a page you reached from a link. Open the site yourself.</li>
+          <li>Banks and SARS will never ask for your PIN or OTP by email or SMS.</li>
+          <li>At work, report it to your IT or security team, even if you already clicked.</li>
+        </ol>
+      </div>
+    </section>
   </main>
+
+  <footer class="wrap footer small muted">
+    <span>Heuristic checks only: a low score is not a guarantee a link is safe.</span>
+    <span>Built by <a href="https://bongokuhle-nokubonga.github.io/portfolio-website/">Nokubonga Nkuna</a></span>
+  </footer>
   <script type="module" src="app.js"></script>
 </body>
 </html>

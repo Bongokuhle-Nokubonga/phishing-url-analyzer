@@ -5,9 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Phishing URL Analyzer Tests</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .page { padding: 40px 0; }
+    .findings li { display: block; font: .9rem ui-monospace, Consolas, monospace; }
+    .findings li.low { border-left: 4px solid var(--low); }
+    .findings li.high { border-left: 4px solid var(--high); color: var(--high); }
+  </style>
 </head>
 <body>
-  <main class="wrap">
+  <main class="wrap page">
     <h1>Tests</h1>
     <p id="summary"><strong>Running…</strong></p>
     <div class="card"><ul id="list" class="findings"></ul></div>
